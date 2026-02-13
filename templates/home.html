@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Home Page</title>
+  <link rel="icon" type="image/jpeg" href="static/home.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/home.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+{% extends "nav.html" %}
+{% block title %}Home Page{% endblock %}
+{% block content %}
+<body>
+  <div class="hero-section">
+    <h1>Valve Final Inspections</h1>
+    <p>Ensure Quality, Ensure Safety.</p>
+  </div>
+ 
+</body>
+</html>
+{%endblock%}

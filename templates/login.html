@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <link rel="icon" type="image/jpeg" href="{{ url_for('static', filename='avatar.png') }}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/login.css') }}">
+</head>
+
+{% extends "nav.html" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+
+<body>
+  <div class="login-container">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <ul class="messages">
+      {% for category, message in messages %}
+      <li class="{{ category }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+
+    {% if error %}
+    <div class="alert alert-danger"
+      style="color: #d32f2f; background: #ffebee; padding: 12px; border-radius: 4px; margin-bottom: 20px; text-align: center;">
+      {{ error }}
+    </div>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('login') }}" class="login-form">
+      <h1 class="login-title">Login</h1>
+
+      <div class="input-box">
+        <input type="text" name="username" placeholder="Username" required>
+        <i class="fa fa-user"></i>
+      </div>
+
+      <div class="input-box position-relative">
+        <input type="password" id="password" name="password" placeholder="Password" required>
+        <i class="fa fa-eye" id="togglePassword"
+          style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer;">
+        </i>
+      </div>
+
+      <div class="remember-forgot">
+        <label>
+          <input type="checkbox" name="remember"> Remember me
+        </label>
+        <a class="forgot-password" href="#">Forgot Password?</a>
+      </div>
+
+      <button class="login-button" type="submit">Login</button>
+    </form>
+  </div>
+
+  <script>
+    setTimeout(() => {
+      document.querySelectorAll('.messages li').forEach(msg => {
+        msg.style.transition = 'opacity 0.5s';
+        msg.style.opacity = '0';
+        setTimeout(() => msg.remove(), 500);
+      });
+    }, 3000);
+  </script>
+
+  <script>
+    const togglePassword = document.getElementById("togglePassword");
+    const password = document.getElementById("password");
+
+    togglePassword.addEventListener("click", () => {
+      if (password.type === "password") {
+        password.type = "text";
+        togglePassword.classList.replace("fa-eye", "fa-eye-slash");
+      } else {
+        password.type = "password";
+        togglePassword.classList.replace("fa-eye-slash", "fa-eye");
+      }
+    });
+  </script>
+</body>
+{% endblock %}
+
+</html>

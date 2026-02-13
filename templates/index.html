@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vision System for Valve Final Inspection</title>
+  <link rel="icon" type="image/jpeg" href="static/inspection.png" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/style.css') }}">
+</head>
+
+{% extends "nav.html" %}
+{% block title %}Start Inspection{% endblock %}
+
+{% block content %}
+
+<body>
+  <div class="container-fluid py-4">
+    <h1 class="main-title text-center mb-4">Vision System<br>for<br>Valve Final Inspection</h1>
+
+    <div class="filter-container">
+      <label for="locationFilter" style="color:#08CB00; font-weight:bold; font-size:20px;">Locations:</label>
+      <select id="locationFilter">
+        <option value="p2">P2</option>
+        <option value="p3">P3</option>
+        <option value="p4">P4</option>
+        <option value="p5">P5</option>
+        <option value="p6">P6</option>
+      </select>
+
+      <label for="shiftFilter" style="color:#08CB00; font-weight:bold;font-size:20px;">Shift Filter:</label>
+      <select id="shiftFilter">
+        <option value="Shift1">Shift1</option>
+        <option value="Shift2">Shift2</option>
+        <option value="Shift3">Shift3</option>
+      </select>
+    </div>
+
+    <div class="row g-3">
+      <div class="col-lg-6 col-md-12 d-flex flex-column gap-3">
+        <div id="cameraSection" class="card-section camera-section">
+          <div class="camera-container position-relative">
+            <img id="cameraFeed" class="w-100 rounded" width="640" height="200" alt="Live Camera Feed" />
+            <div class="camera-overlay d-flex align-items-start justify-content-start p-2">
+              <div class="camera-info">Camera Active</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-7 move-right">
+          <div id="inspectionDetailsSection" class="inspection-details" style="display:none;">
+            {% if inspection %}
+            <div class="text-start">
+              <table class="table table-bordered table-sm">
+                <tr>
+                  <th>Part Number</th>
+                  <td>{{ inspection.part_number }}</td>
+                </tr>
+                <tr>
+                  <th>Result</th>
+                  <td>{{ inspection.result }}</td>
+                </tr>
+                <tr>
+                  <th>SSIM Score</th>
+                  <td>{{ inspection.ssim_score }}</td>
+                </tr>
+                <tr>
+                  <th>Defect Type</th>
+                  <td>{{ inspection.defect_type }}</td>
+                </tr>
+                <tr>
+                  <th>Best Match</th>
+                  <td>{{ inspection.trained_image }}</td>
+                </tr>
+                <tr>
+                  <th>Timestamp</th>
+                  <td>{{ inspection.timestamp }}</td>
+                </tr>
+              </table>
+
+              {% if inspection.image_path %}
+              <div class="text-center mt-3">
+                <img src="{{ url_for('static', filename=inspection.image_path) }}" alt="Inspection Image"
+                  class="img-fluid rounded shadow-sm border" style="max-height:400px;">
+              </div>
+              {% endif %}
+            </div>
+            {% else %}
+            <p class="text-muted mt-3">No inspection details found.</p>
+            {% endif %}
+          </div>
+
+          <a href="{{ url_for('inspection_index', part_number=part_number) }}" id="loadInspectionDetailsBtn"
+            class="btn btn-primary" title="Shortcut: I"
+            style="width:250px; padding:5px 10px; margin-top:20px; margin-left:5%;">
+            <i class="fas fa-info-circle"></i> Load Inspection Details
+          </a>
+        </div>
+        <div id="errorAlert" class="alert alert-danger mt-3" style="display: none;">
+          <i class="fas fa-exclamation-triangle"></i>
+          <span id="errorMessage"></span>
+        </div>
+        <a href="{{ url_for('home') }}" class="btn btn-home"
+          style="width:120px; background-color:#6f42c1; color:#fff; margin-left:29%;">
+          <i class="fas fa-home"></i> Back
+        </a>
+      </div>
+      <div class="col-lg-6 col-md-12 d-flex flex-column gap-3">
+        <div id="imagePreview" class="card-section image-preview text-center">
+          <img id="capturedImage" src="" alt="Preview" class="img-fluid rounded shadow-sm">
+        </div>
+        <div class="buttons-container d-flex flex-wrap gap-2">
+          <button class="btn btn-success" id="cameraBtn" onclick="toggleCamera()" title="Shortcut: Space">
+            <i class="fas fa-video"></i> Start Camera
+          </button>
+
+          <button class="btn btn-info" onclick="document.getElementById('imageInput').click()" title="Shortcut: T">
+            <i class="fas fa-upload"></i> Test Folder
+          </button>
+
+          <button class="btn btn-warning" id="captureBtn" onclick="captureImage()" style="display:none;"
+            title="Shortcut: C">
+            <i class="fas fa-camera"></i> Capture
+          </button>
+
+          <button class="btn btn-danger" onclick="stopCamera()" title="Shortcut: S">
+            <i class="fas fa-stop"></i> Stop Camera
+          </button>
+        </div>
+        <div id="loadingIndicator" class="text-center" style="display:none;">
+          <div class="spinner-border text-primary"></div>
+          <p class="mt-2 text-dark">Processing image...</p>
+        </div>
+
+        <div class="row g-1">
+          <div class="col-md-7 move-right">
+            <div id="resultsSection" class="results-section" style="display:none;">
+              <div class="row justify-content-center">
+                <div class="col-md-5">
+                  <div class="card p-3">
+                    <h5 class="card-title" style="color:#6f42c1;font-size:30px;font-family:cursive;font-weight:bold;">
+                      Inspection Result
+                    </h5>
+                    <p class="result-label" id="resultLabel">Result:</p>
+                    <div id="resultDetails" class="result-details"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form id="uploadForm" style="display:none;">
+          <input type="file" name="image" id="imageInput" accept="image/*">
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="{{ url_for('static', filename='JS/main.js')}}"></script>
+</body>
+
+</html>
+{% endblock %}

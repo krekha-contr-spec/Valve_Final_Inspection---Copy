@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Inspection Dashboard</title>
+  <link rel="icon" type="image/jpeg" href="static/dashboard.png" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/dashboard.css') }}">
+</head>
+
+{% extends "nav.html" %}
+{% block title %}Inspection Dashboard{% endblock %}
+
+{% block content %}
+
+<body>
+  <div class="container">
+    <h1>Dashboard</h1>
+
+    <div class="filter-form">
+
+      <label for="locationFilter" style="color:#08CB00; font-weight:bold; font-size:20px;">Locations:</label>
+      <select id="locationFilter">
+        <option value="">All Plants</option>
+        <option value="p2">P2</option>
+        <option value="p3">P3</option>
+        <option value="p4">P4</option>
+        <option value="p5">P5</option>
+        <option value="p6">P6</option>
+      </select>
+      <label for="partFilter" style="color:#08CB00; font-weight:bold; font-size:20px;">Part Number:</label>
+      <select id="partFilter" onchange="loadChart()">
+        <option value="none">None</option>
+        <option value="48465">48465</option>
+        <option value="48460">48460</option>
+        <option value="46152">46152</option>
+        <option value="46157">46157</option>
+        <option value="48290">48290</option>
+        <option value="48295">48295</option>
+        <option value="49020">49020</option>
+
+      </select>
+
+      <label for="shiftFilter" style="color:#08CB00; font-weight:bold;font-size:20px;">Shift Filter:</label>
+      <select id="shiftFilter">
+        <option value="">All Shifts</option>
+        <option value="Shift1">Shift1</option>
+        <option value="Shift2">Shift2</option>
+        <option value="Shift3">Shift3</option>
+      </select>
+
+      <label for="timeFilter" style="color:#08CB00; font-weight:bold;font-size:20px;">Time Filter:</label>
+      <select id="timeFilter" onchange="loadChart()">
+
+        <option value="daily">Daily</option>
+        <option value="weekly">Weekly</option>
+        <option value="monthly">Monthly</option>
+        <option value="yearly">Yearly</option>
+        <option value="none">None</option>
+      </select>
+    </div>
+
+    <div id="dashboardCounts" class="dashboard-counts">
+      <div class="count-box accepted">
+        <div class="label">🟩 Accepted</div>
+        <div class="value" id="acceptedCount">0</div>
+      </div>
+      <div class="count-box rejected">
+        <div class="label">🟥 Rejected</div>
+        <div class="value" id="rejectedCount">0</div>
+      </div>
+      <div class="count-box total">
+        <div class="label">🟪 Total</div>
+        <div class="value" id="totalCount">0</div>
+      </div>
+    </div>
+
+    <div class="charts">
+      <canvas id="pieChart"></canvas>
+      <canvas id="barChart"></canvas>
+    </div>
+
+    <a href="{{ url_for('dashboard') }}" class="reject_dashboard">Go to Main Dashboard</a>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+  <script src="{{ url_for('static', filename='JS/overall_dashboard.js') }}"></script>
+</body>
+
+</html>
+{% endblock %}

@@ -1,0 +1,74 @@
+h1 {
+    color: purple;
+    margin-top: 0px;
+    font-family: cursive;
+    font-weight: bold;
+    text-align: center;
+}
+
+#selectedFilters {
+    font-weight: bold;
+    color: #6A0DAD; 
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+#defectBarChart {
+    max-width: 100%;
+    margin: 40px auto;
+    display: block;
+}
+.dashboard-nav {
+    display: flex;
+    gap: 1rem;
+}
+
+.filter-form {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.filter-form select {
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    border: 2px solid #4CAF50;
+    background-color: #f9f9f9;
+    color: #A294F9;
+    width: 18%;
+    margin: 5px 15px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.filter-form select:focus {
+    outline: none;
+    border-color: #2e7d32;
+    box-shadow: 0 0 6px rgba(76, 175, 80, 0.5);
+}
+
+.damage-btn {
+    background-color: #ff4081;
+    border: none;
+    color: black;
+    font-weight: bold;
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 20px auto;
+    width: 10%;
+    border-radius: 10px;
+    text-decoration: none;
+    cursor: pointer;
+    display: block;
+    text-align: center;
+}
+
+.damage-btn:hover {
+    background-color: #d7376b;
+}
+
+
