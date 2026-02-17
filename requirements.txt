@@ -152,7 +152,7 @@ pyasn1_modules==0.4.2
 pybboxes==0.1.6
 pycparser==2.22
 Pygments==2.19.1
-pyinstaller==6.14.1
+pyinstaller==6.19.0
 pyinstaller-hooks-contrib==2025.5
 pyloco==0.0.139
 PyMatting==1.1.14
@@ -260,6 +260,7 @@ XlsxWriter==3.2.3
 yagmail==0.15.293
 yolov5==7.0.14
 yolov8==0.0.2
+
 
 
 
