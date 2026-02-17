@@ -136,7 +136,6 @@ passlib==1.7.4
 pefile==2023.2.7
 pi_heif==1.0.0
 pillow==11.2.1
-pillow-avif-plugin==1.5.2
 platformdirs==4.3.8
 plyer==2.1.0
 pooch==1.8.2
@@ -261,6 +260,7 @@ XlsxWriter==3.2.3
 yagmail==0.15.293
 yolov5==7.0.14
 yolov8==0.0.2
+
 
 
 
