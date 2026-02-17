@@ -33,7 +33,6 @@ def detect_edges(image):
 
     return edges
 
-
 def extract_edge_features(edges):
     contours, _ = cv2.findContours(edges.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
