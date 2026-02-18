@@ -182,7 +182,7 @@ python-pptx==1.0.2
 python-socketio==5.13.0
 python-tds==1.17.1
 pytz==2025.2
-pywin32==311
+pywin32
 pywin32-ctypes==0.2.3
 PyYAML==6.0.2
 pyzbar==0.1.9
@@ -260,6 +260,7 @@ XlsxWriter==3.2.3
 yagmail==0.15.293
 yolov5==7.0.14
 yolov8==0.0.2
+
 
 
 
